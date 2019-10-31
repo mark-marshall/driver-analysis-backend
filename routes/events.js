@@ -25,22 +25,7 @@ Response: {
     "03_15Mel": 0,
     "03_29Sep": 1,
     "04_12Sha": 0,
-    "04_19Bah": 1,
-    "05_10Bcn": -1,
-    "05_24Mco": 0,
-    "06_07Mtl": 0,
-    "06_21A1r": 0,
-    "07_05Sil": 0,
-    "07_26Bud": 1,
-    "08_23Spa": 0,
-    "09_06Mza": 0,
-    "09_20Sgp": 2,
-    "09_27Suz": -1,
-    "10_11Soc": -3,
-    "10_25Aus": 0,
-    "11_01Mex": 0,
-    "11_15Int": 0,
-    "11_29Abu": -1
+    ...
 }
 NOTE: {} are returned for seasons with no comparison sessions and values 
 are rounded for simplicity. Delta is calculated as an absolute lap time delta.
@@ -50,7 +35,7 @@ routes.post('/direct', async (req, res) => {
   try {
     const driverA = await models.Driver.find({ name: target });
     const driverB = await models.Driver.find({ name: competitor });
-    // initialize a session_comparisons object to hold the seasons deltas
+    // initialize a session_comparisons object to hold the session deltas
     const sessionComparisons = {};
     // get required sessions
     driverASessions = driverA[0].career[year].filter(
@@ -77,6 +62,56 @@ routes.post('/direct', async (req, res) => {
             driverASessions[i].fl - driverBSession[0].fl,
           );
         }
+      }
+    }
+    // return the result
+    res.status(200).json(sessionComparisons);
+  } catch (error) {
+    res.status(500).json({
+      message:
+        'Plese input a valid driver for both the target and competitor keys, and valid year and session-type',
+    });
+  }
+});
+
+/*
+[POST] - to /events/teammate
+Request: {
+    "target": "HAM",
+    "year": "2017",
+    "session": "Race"
+}
+Response: {
+    "03_26Mel": 0,
+    "04_09Sha": 0,
+    "04_16Bah": -1,
+    ...
+}
+NOTE: {} are returned for seasons with no comparison sessions and values 
+are rounded for simplicity. Delta is calculated as an absolute lap time delta.
+*/
+routes.post('/teammate', async (req, res) => {
+  const { target, year, session } = req.body;
+  try {
+    const targetDriver = await models.Driver.find({ name: target });
+    // initialize a session_comparisons object to hold the seasons deltas
+    const sessionComparisons = {};
+    // get required sessions
+    targetDriverSessions = targetDriver[0].career[year].filter(
+      rec => rec['session'] == session,
+    );
+    // loop over each of the drivers sessions
+    for (i = 0; i < targetDriverSessions.length; i++) {
+      // check whether both driver and teammate have a valid time for the session
+      if (
+        targetDriverSessions[i].fl &&
+        targetDriverSessions[i].teammate_fl &&
+        targetDriverSessions[i].fl !== 'NULL' &&
+        targetDriverSessions[i].teammate_fl !== 'NULL'
+      ) {
+        sessionComparisons[targetDriverSessions[i].event] = Math.round(
+          targetDriverSessions[i].fl - targetDriverSessions[i].teammate_fl,
+        );
       }
     }
     // return the result
