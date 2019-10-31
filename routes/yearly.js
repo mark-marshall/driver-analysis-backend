@@ -16,12 +16,12 @@ routes.get('/', (req, res) => {
 /*
 [POST] - to /yearly/direct
 Request: {
-    "target": "ROS",
-	"competitor": "HAM"
+    "target": "HAM",
+	"competitor": "ROS"
 }
-Response: {
-    "2015": -8,
-    "2016": 37,
+{
+    "2015": 8,
+    "2016": 18,
     "2017": 0,
     "2018": 0,
     "2019": 0
@@ -46,17 +46,22 @@ routes.post('/direct', async (req, res) => {
       delta = 0;
       // loop over every session for the year
       for (i = 0; i < driverA[0].career[key].length; i++) {
-        let driverB_time = driverB[0].career[key];
         let driverA_time = driverA[0].career[key];
-        // check whether both drivers have a valid time for the session
+        // find the event/session for the competitor
+        let session = driverB[0].career[key].filter(rec => {
+            if(rec['event'] == driverA[0].career[key][i].event && rec['session'] == driverA[0].career[key][i].session){
+                return rec
+            }
+        })
+        // check whether both driver and competitor have a valid time for the session
         if (
-          driverB_time[i] &&
-          driverB_time[i].fl &&
-          driverB_time[i].fl !== 'NULL' &&
+          session.length &&
+          session[0].fl &&
+          session[0].fl !== 'NULL' &&
           driverA_time[i].fl !== 'NULL'
         ) {
           // increment the yearly delta
-          delta += Math.round(driverA_time[i].fl - driverB_time[i].fl);
+          delta += Math.round(driverA_time[i].fl - session[0].fl);
         }
       }
       // save the delta to the key for that year
