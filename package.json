@@ -5,6 +5,10 @@
   "repository": "https://github.com/mark-marshall/driver-analysis-backend.git",
   "author": "mark-marshall <mark.marshallgp@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "server": "nodemon index.js",
+    "start": "node index.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
