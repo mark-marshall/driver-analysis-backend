@@ -1,0 +1,20 @@
+{
+  "name": "driver-analysis-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mark-marshall/driver-analysis-backend.git",
+  "author": "mark-marshall <mark.marshallgp@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "mongodb": "^3.3.3",
+    "mongoose": "^5.7.7"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "nodemon": "^1.19.4"
+  }
+}
