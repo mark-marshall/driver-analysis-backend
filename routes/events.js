@@ -58,9 +58,9 @@ routes.post('/direct', async (req, res) => {
           driverBSession[0].fl !== 'NULL'
         ) {
           // add the delta to the sessionComparisons object
-          sessionComparisons[driverASessions[i].event] = Math.round(
-            driverASessions[i].fl - driverBSession[0].fl,
-          );
+          sessionComparisons[driverASessions[i].event] =
+            Math.round((driverASessions[i].fl - driverBSession[0].fl) * 100) /
+            100;
         }
       }
     }
@@ -94,7 +94,7 @@ routes.post('/teammate', async (req, res) => {
   const { target, year, session } = req.body;
   try {
     const targetDriver = await models.Driver.find({ name: target });
-    // initialize a session_comparisons object to hold the seasons deltas
+    // initialize a session_comparisons object to hold the session deltas
     const sessionComparisons = {};
     // get required sessions
     targetDriverSessions = targetDriver[0].career[year].filter(
@@ -109,9 +109,11 @@ routes.post('/teammate', async (req, res) => {
         targetDriverSessions[i].fl !== 'NULL' &&
         targetDriverSessions[i].teammate_fl !== 'NULL'
       ) {
-        sessionComparisons[targetDriverSessions[i].event] = Math.round(
-          targetDriverSessions[i].fl - targetDriverSessions[i].teammate_fl,
-        );
+        sessionComparisons[targetDriverSessions[i].event] =
+          Math.round(
+            (targetDriverSessions[i].fl - targetDriverSessions[i].teammate_fl) *
+              100,
+          ) / 100;
       }
     }
     // return the result
