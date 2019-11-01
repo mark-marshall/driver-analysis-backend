@@ -1,5 +1,6 @@
 const yearly = require('./yearly')
 const events = require('./events')
+const drivers = require('./drivers')
 
 module.exports = server => {
   server.get('/', (req, res) => {
@@ -8,4 +9,5 @@ module.exports = server => {
 
   server.use('/yearly',yearly)
   server.use('/events',events)
+  server.use('/drivers',drivers)
 };
