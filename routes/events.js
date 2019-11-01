@@ -38,29 +38,29 @@ routes.post('/direct', async (req, res) => {
     // initialize a session_comparisons object to hold the session deltas
     const sessionComparisons = {};
     // get required sessions
-    driverASessions = driverA[0].career[year].filter(
+    driverASessions = driverA[0]['career'][year].filter(
       rec => rec['session'] == session,
     );
     if (driverASessions.length) {
       for (i = 0; i < driverASessions.length; i++) {
-        let driverBSession = driverB[0].career[year].filter(rec => {
+        let driverBSession = driverB[0]['career'][year].filter(rec => {
           if (
-            rec.event == driverASessions[i].event &&
-            rec.session == driverASessions[i].session
+            rec['event'] == driverASessions[i]['event'] &&
+            rec['session'] == driverASessions[i]['session']
           ) {
             return rec;
           }
         });
         if (
           driverBSession.length &&
-          driverASessions[i].fl &&
-          driverASessions[i].fl !== 'NULL' &&
-          driverBSession[0].fl !== 'NULL'
+          driverASessions[i]['fl'] &&
+          driverASessions[i]['fl'] !== 'NULL' &&
+          driverBSession[0]['fl'] !== 'NULL'
         ) {
           // add the delta to the sessionComparisons object
-          sessionComparisons[driverASessions[i].event] = Math.round(
-            driverASessions[i].fl - driverBSession[0].fl,
-          );
+          sessionComparisons[driverASessions[i]['event']] =
+            Math.round((driverASessions[i]['fl'] - driverBSession[0]['fl']) * 100) /
+            100;
         }
       }
     }
@@ -94,24 +94,26 @@ routes.post('/teammate', async (req, res) => {
   const { target, year, session } = req.body;
   try {
     const targetDriver = await models.Driver.find({ name: target });
-    // initialize a session_comparisons object to hold the seasons deltas
+    // initialize a session_comparisons object to hold the session deltas
     const sessionComparisons = {};
     // get required sessions
-    targetDriverSessions = targetDriver[0].career[year].filter(
+    targetDriverSessions = targetDriver[0]['career'][year].filter(
       rec => rec['session'] == session,
     );
     // loop over each of the drivers sessions
     for (i = 0; i < targetDriverSessions.length; i++) {
       // check whether both driver and teammate have a valid time for the session
       if (
-        targetDriverSessions[i].fl &&
-        targetDriverSessions[i].teammate_fl &&
-        targetDriverSessions[i].fl !== 'NULL' &&
-        targetDriverSessions[i].teammate_fl !== 'NULL'
+        targetDriverSessions[i]['fl'] &&
+        targetDriverSessions[i]['teammate_fl'] &&
+        targetDriverSessions[i]['fl'] !== 'NULL' &&
+        targetDriverSessions[i]['teammate_fl'] !== 'NULL'
       ) {
-        sessionComparisons[targetDriverSessions[i].event] = Math.round(
-          targetDriverSessions[i].fl - targetDriverSessions[i].teammate_fl,
-        );
+        sessionComparisons[targetDriverSessions[i]['event']] =
+          Math.round(
+            (targetDriverSessions[i]['fl'] - targetDriverSessions[i]['teammate_fl']) *
+              100,
+          ) / 100;
       }
     }
     // return the result

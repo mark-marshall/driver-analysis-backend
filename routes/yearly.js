@@ -38,20 +38,20 @@ routes.post('/direct', async (req, res) => {
     // initialize a years object to hold annual deltas
     const years = {};
     // loop over the year keys in the retrieved document for driver
-    for (let key in driverA[0].career) {
+    for (let key in driverA[0]['career']) {
       if (!key.includes('20')) {
         continue;
       }
       // initialize the delta for the year
       delta = 0;
       // loop over every session for the year
-      for (i = 0; i < driverA[0].career[key].length; i++) {
-        let driverA_time = driverA[0].career[key];
+      for (i = 0; i < driverA[0]['career'][key].length; i++) {
+        let driverA_time = driverA[0]['career'][key];
         // find the event/session for the competitor
-        let session = driverB[0].career[key].filter(rec => {
+        let session = driverB[0]['career'][key].filter(rec => {
           if (
-            rec['event'] == driverA[0].career[key][i].event &&
-            rec['session'] == driverA[0].career[key][i].session
+            rec['event'] == driverA[0]['career'][key][i]['event'] &&
+            rec['session'] == driverA[0]['career'][key][i]['session']
           ) {
             return rec;
           }
@@ -59,12 +59,12 @@ routes.post('/direct', async (req, res) => {
         // check whether both driver and competitor have a valid time for the session
         if (
           session.length &&
-          session[0].fl &&
-          session[0].fl !== 'NULL' &&
-          driverA_time[i].fl !== 'NULL'
+          session[0]['fl'] &&
+          session[0]['fl'] !== 'NULL' &&
+          driverA_time[i]['fl'] !== 'NULL'
         ) {
           // increment the yearly delta
-          delta += Math.round(driverA_time[i].fl - session[0].fl);
+          delta += Math.round(driverA_time[i]['fl'] - session[0]['fl']);
         }
       }
       // save the delta to the key for that year
@@ -103,25 +103,25 @@ routes.post('/teammate', async (req, res) => {
     // initialize a years object to hold annual deltas
     const years = {};
     // loop over the year keys in the retrieved document for driver
-    for (let key in targetDriver[0].career) {
+    for (let key in targetDriver[0]['career']) {
       if (!key.includes('20')) {
         continue;
       }
       // initialize the delta for the year
       delta = 0;
       // loop over every session for the year
-      for (i = 0; i < targetDriver[0].career[key].length; i++) {
-        let time = targetDriver[0].career[key];
+      for (i = 0; i < targetDriver[0]['career'][key].length; i++) {
+        let time = targetDriver[0]['career'][key];
         // check whether both driver and teammate have a valid time for the session
         if (
           time[i] &&
-          time[i].fl &&
-          time[i].teammate_fl &&
-          time[i].fl !== 'NULL' &&
-          time[i].teammate_fl !== 'NULL'
+          time[i]['fl'] &&
+          time[i]['teammate_fl'] &&
+          time[i]['fl'] !== 'NULL' &&
+          time[i]['teammate_fl'] !== 'NULL'
         ) {
           // increment the yearly delta
-          delta += Math.round(time[i].fl - time[i].teammate_fl);
+          delta += Math.round(time[i]['fl'] - time[i]['teammate_fl']);
         }
       }
       // save the delta to the key for that year
