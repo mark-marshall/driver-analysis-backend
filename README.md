@@ -4,7 +4,7 @@ All API requests are made to `https://driver-analysis.herokuapp.com/`
 ## Available endpoints
 
 ### /drivers
-[GET] to /
+**[GET] to /**
 ```
 Reponse: [
     "ROS",
@@ -14,7 +14,7 @@ Reponse: [
 ]
 ```
 ### /events
-[POST] to /direct
+**[POST] to /direct**
 ```
 Request: {
     "target": "HAM",
@@ -29,7 +29,7 @@ Response: {
     ...
 }
 ```
-[POST] to /teammate
+**[POST] to /teammate**
 ```
 Request: {
     "target": "HAM",
@@ -44,7 +44,7 @@ Response: {
 }
 ```
 ### /yearly
-[POST] to /direct
+**[POST] to /direct**
 ```
 Request: {
     "target": "HAM",
@@ -58,7 +58,7 @@ Request: {
     "2019": 0
 }
 ```
-[POST] to /teammate
+**[POST] to /teammate**
 ```
 Request: {
     "target": "HAM",
