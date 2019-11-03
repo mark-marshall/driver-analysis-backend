@@ -75,3 +75,4 @@ Response: {
 ## Points for improvemment
 - Cumulative deltas for yearly endpoints should be replaced with percentage differences
 - Endpoints should be added to proivde a list of available years and session types to remove hardcoding on frontend
+- Error handling and error documentation should be built out more formally with useful messages 
