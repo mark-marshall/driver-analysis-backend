@@ -5,9 +5,11 @@ const routes = express.Router();
 
 /*
 [GET] - to /drivers
-Reponse: {
-    "message": 'Drivers route alive!' 
-}
+Reponse: [
+    "ROS",
+    "HAM",
+    "RIC"...
+]
 */
 routes.get('/', async (req, res) => {
   models.Driver.distinct('name', function(err, drivers) {
