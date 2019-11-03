@@ -48,7 +48,7 @@ Response: {
 ```
 Request: {
     "target": "HAM",
-	  "competitor": "ROS"
+    "competitor": "ROS"
 }
 {
     "2015": 8,
